@@ -16,14 +16,16 @@ import { Link } from "react-router";
 import { useForm } from "react-hook-form";
 import { useToast } from "@chakra-ui/react";
 import { useRegister } from "../services/auth/auth";
+import { useNavigate } from "react-router";
 
 export default function Register() {
     // register hook
-    const { mutateAsync: registerUser } = useRegister();
+    const { mutateAsync: registerUser, isPending } = useRegister();
     const toast = useToast();
+    const navigate = useNavigate();
 
     // register form 
-    const { register, handleSubmit, formState: { errors } } = useForm({
+    const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm({
         defaultValues: {
             username: "",
             email: "",
@@ -44,6 +46,7 @@ export default function Register() {
                 duration: 3000,
                 isClosable: true,
             });
+            navigate('/login');
         } catch (error) {
             toast({
                 title: "Register failed",
@@ -115,6 +118,7 @@ export default function Register() {
                     </FormControl>
                     <Button colorScheme="cyan" color={"black"} width={"full"} marginTop={4}
                         type="submit"
+                        isLoading={isPending || isSubmitting}
                     >
                         Register
                     </Button>

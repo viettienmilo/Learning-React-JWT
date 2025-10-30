@@ -16,12 +16,12 @@ import { useAuthStore } from "../store/authStore";
 
 const Login = () => {
     const { setTokens } = useAuthStore();
-    const { mutateAsync: loginUser } = useLogin();
+    const { mutateAsync: loginUser, isPending } = useLogin();
     const navigate = useNavigate();
     const {
         register,
         handleSubmit,
-        formState: { errors },
+        formState: { errors, isSubmitting },
     } = useForm({
         defaultValues: {
             email: "",
@@ -86,6 +86,8 @@ const Login = () => {
                         width={"full"}
                         type="submit"
                         color={"black"}
+                        isLoading={isPending || isSubmitting}
+                        loadingText="Logging in..."
                     >
                         Login
                     </Button>
