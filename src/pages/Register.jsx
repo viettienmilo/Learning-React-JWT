@@ -14,8 +14,14 @@ import {
 } from "@chakra-ui/react";
 import { Link } from "react-router";
 import { useForm } from "react-hook-form";
+import { useToast } from "@chakra-ui/react";
+import { useRegister } from "../services/auth/auth";
 
 export default function Register() {
+    // register hook
+    const { mutateAsync: registerUser } = useRegister();
+    const toast = useToast();
+
     // register form 
     const { register, handleSubmit, formState: { errors } } = useForm({
         defaultValues: {
@@ -27,8 +33,26 @@ export default function Register() {
     });
 
     // function for handle form submit
-    const onSubmit = (formData) => {
-        console.log(formData)
+    const onSubmit = async (formData) => {
+        try {
+            // register new user
+            await registerUser(formData);
+            toast({
+                title: "Register success",
+                description: "You have successfully registered",
+                status: "success",
+                duration: 3000,
+                isClosable: true,
+            });
+        } catch (error) {
+            toast({
+                title: "Register failed",
+                description: "Something went wrong",
+                status: "error",
+                duration: 3000,
+                isClosable: true,
+            });
+        }
     }
 
     return (
