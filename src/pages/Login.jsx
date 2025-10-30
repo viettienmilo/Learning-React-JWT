@@ -12,8 +12,11 @@ import {
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 import { useLogin } from "../services/auth/auth";
+import { useAuthStore } from "../store/authStore";
 
 const Login = () => {
+    const { setTokens } = useAuthStore();
+    const { mutateAsync: loginUser } = useLogin();
     const navigate = useNavigate();
     const {
         register,
@@ -25,15 +28,18 @@ const Login = () => {
             password: "",
         },
     });
-    const { mutateAsync: loginUser } = useLogin();
 
     const onSubmit = async (data) => {
         try {
-            await loginUser(data);
+            const response = await loginUser(data);
+            const { accessToken, refreshToken } = response.data;
+            setTokens({ accessToken, refreshToken });
+            navigate("/product");
         } catch (error) {
             console.log(error);
         }
     };
+
 
     return (
         <Box

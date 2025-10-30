@@ -3,6 +3,8 @@ import MainLayout from './../layout/MainLayout.jsx';
 import Home from './../pages/Home.jsx';
 import Register from './../pages/Register.jsx';
 import Login from './../pages/Login.jsx';
+import Product from './../pages/Product.jsx';
+
 const router = createBrowserRouter([
     {
         path: "/",
@@ -19,6 +21,10 @@ const router = createBrowserRouter([
             {
                 path: "login",
                 element: <Login />
+            },
+            {
+                path: "product",
+                element: <Product />
             },
         ],
     },
