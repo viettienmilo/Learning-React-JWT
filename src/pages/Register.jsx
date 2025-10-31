@@ -119,6 +119,7 @@ export default function Register() {
                     <Button colorScheme="cyan" color={"black"} width={"full"} marginTop={4}
                         type="submit"
                         isLoading={isPending || isSubmitting}
+                        loadingText="Registering..."
                     >
                         Register
                     </Button>

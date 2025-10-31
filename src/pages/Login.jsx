@@ -33,7 +33,8 @@ const Login = () => {
         try {
             const response = await loginUser(data);
             const { accessToken, refreshToken } = response.data;
-            setTokens({ accessToken, refreshToken });
+            const userRole = response.data.user.role;
+            setTokens({ accessToken, refreshToken, userRole });
             navigate("/product");
         } catch (error) {
             console.log(error);
