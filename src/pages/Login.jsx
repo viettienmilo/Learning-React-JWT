@@ -13,6 +13,10 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 import { useLogin } from "../services/auth/auth";
 import { useAuthStore } from "../store/authStore";
+import { FcGoogle } from "react-icons/fc";
+import { FaGithub } from "react-icons/fa";
+import { GoogleAuthProvider, GithubAuthProvider, signInWithPopup } from "firebase/auth";
+import { auth } from './../services/auth/firebaseConfig.js';
 
 const Login = () => {
     const { setTokens } = useAuthStore();
@@ -41,6 +45,29 @@ const Login = () => {
         }
     };
 
+    const signInGoogle = async () => {
+        const provider = new GoogleAuthProvider();
+        try {
+            const result = await signInWithPopup(auth, provider);
+            const { accessToken, refreshToken } = result.user.stsTokenManager;
+            setTokens({ accessToken, refreshToken, userRole: "USER" });
+            navigate("/product");
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    const signInGithub = async () => {
+        const provider = new GithubAuthProvider();
+        try {
+            const result = await signInWithPopup(auth, provider);
+            const { accessToken, refreshToken } = result.user.stsTokenManager;
+            setTokens({ accessToken, refreshToken, userRole: "USER" });
+            navigate("/product");
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
     return (
         <Box
@@ -91,6 +118,24 @@ const Login = () => {
                         loadingText="Logging in..."
                     >
                         Login
+                    </Button>
+                    <Button
+                        variant={"outline"}
+                        colorScheme="purple"
+                        width={"full"}
+                        onClick={signInGoogle}
+                    >
+                        <Text me={2}>Sign in with Google</Text>
+                        <FcGoogle />
+                    </Button>
+                    <Button
+                        variant={"outline"}
+                        colorScheme="green"
+                        width={"full"}
+                        onClick={signInGithub}
+                    >
+                        <Text me={2}>Sign in with Github</Text>
+                        <FaGithub />
                     </Button>
                     <Button
                         variant={"outline"}
